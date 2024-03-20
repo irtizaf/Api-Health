@@ -1,46 +1,53 @@
-export const datafor_component = {
+interface ApiData {
+  loading: boolean | null;
+  success?: boolean | string | null;
+  error?: boolean | null;
+  response: string | null;
+}
+
+export const datafor_component: Record<string, ApiData> = {
     makePostRequest: {
     loading: false,
-    success: false,
-    error: false,
+    success: null,
+    error: null,
     response: "",
   },
   getAllCampaign: {
     loading: false,
-    success: false,
-    error: false,
+    success: null,
+    error: null,
     response: "",
   },
   // Add more API calls as needed...
   // For example:
   getSingleCampaign: {
     loading: false,
-    success: false,
-    error: false,
+    success: null,
+    error: null,
     response: "",
   },
   deleteCampaign: {
     loading: false,
-    success: false,
-    error: false,
+    success: null,
+    error: null,
     response: "",
   },
   killCampaign: {
     loading: false,
-    success: false,
-    error: false,
+    success: null,
+    error: null,
     response: "",
   },
   pauseCampaign: {
     loading: false,
-    success: false,
-    error: false,
+    success: null,
+    error: null,
     response: "",
   },
   resumeCampaign: {
     loading: false,
-    success: false,
-    error: false,
+    success: null,
+    error: null,
     response: "",
   },
     

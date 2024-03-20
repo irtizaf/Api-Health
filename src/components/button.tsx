@@ -16,16 +16,16 @@ import { Box, Button, Heading, Spinner,Text,Image } from "@chakra-ui/react";
 import { datafor_component } from "../../data";
 
 
-let sort: string;
+
 const Buttons = () => {
-  const { value ,setValue,setOpenIndex} = useWindowContext();
+  const { value ,setValue,setOpenIndex, setApiError,setHandlebordser } = useWindowContext();
   // const [isLoading, setIsLoading] = useState(false);
   // const [isSuccess, setIsSuccess] = useState(false);
   // const [isError, setIsError] = useState(false);
-  const [response, setResponse] = useState<string[]>([]);
+  const [response, setResponse] = useState<string>("");
   const [apiStates, setApiStates] = useState(datafor_component);
-  const [sortkeyvalue, setSortkeyvalue] = useState<string>("");
-  const [handelallapis,setHandelallapis ] = useState<string>("")
+  // const [sortkeyvalue, setSortkeyvalue] = useState<string>("");
+  // const [handelallapis,setHandelallapis ] = useState<string>("")
   
    
 // console.log(sortkeyvalue)
@@ -36,20 +36,20 @@ const Buttons = () => {
       ...prevApiStates,
       makePostRequest: {
         loading: true,
-        success: false,
+        // success: false,
         error: false,
-        response: "",
+        response: "Create Campaing",
       },
     }));
 
     const res = await postingCampaigns();
     console.log("CAMPAIGN IS CREATED:", res);
-    setResponse((pre) => [...pre, res]);
-    console.log("SORT KEY ASSIGN IN STATE", res)
+    setResponse( res);
+    console.log("SORT KEY ASSIGN IN STATE", response)
     // setSortkeyvalue(res);
-     setSortkeyvalue(res)
-    setValue(res)
-    sort = res
+    //  setSortkeyvalue(res)
+    // setValue(res)
+    // sort = res
 
     if (res !== "AxiosError") {
       setApiStates((prevApiStates) => ({
@@ -58,7 +58,7 @@ const Buttons = () => {
           loading: false,
           success: true,
           error: false,
-          response: "",
+          response: "Create Campaing",
         },
       }));
     } else {
@@ -68,7 +68,7 @@ const Buttons = () => {
           loading: false,
           success: false,
           error: true,
-          response: "",
+          response: "Create Campaing",
         },
       }));
     }
@@ -79,35 +79,36 @@ const Buttons = () => {
       ...prevApiStates,
       getAllCampaign: {
         loading: true,
-        success: false,
+        // success: false,
         error: false,
-        response: "",
+        response: "Get All Campaing",
       },
     }));
 
     const datavalue = await getallcompaing();
-    console.log(datavalue.error, "error" in datavalue);
+    // console.log(datavalue.error, "error" in datavalue);
 
     if (!("error" in datavalue)) {
-      if (Array.isArray(datavalue)) {
-        const filteredCampaigns = datavalue.filter(
-          (campaign) => campaign.CAMPAIGN_NAME === "CybernutHealth"
-        );
+      setApiStates((prevApiStates) => ({
+        ...prevApiStates,
+        getAllCampaign: {
+          loading: false,
+          success: true,
+          error: false,
+          response: "Get All Campaing",
+        },
+      }));
+      // if (Array.isArray(datavalue)) {
+      //   const filteredCampaigns = datavalue.filter(
+      //     (campaign) => campaign.CAMPAIGN_NAME === "CybernutHealth"
+      //   );
 
-        console.log("======", filteredCampaigns);
-        const sortkey = filteredCampaigns.map((x) => x.SORT_KEY);
-        console.log(sortkey);
-        setResponse(sortkey);
-        setApiStates((prevApiStates) => ({
-          ...prevApiStates,
-          getAllCampaign: {
-            loading: false,
-            success: true,
-            error: false,
-            response: "",
-          },
-        }));
-      }
+      //   console.log("======", filteredCampaigns);
+      //   const sortkey = filteredCampaigns.map((x) => x.SORT_KEY);
+      //   console.log(sortkey);
+      //   setResponse(sortkey);
+       
+      // }
     } else {
       console.log("Error fetching campaigns:");
       setApiStates((prevApiStates) => ({
@@ -116,142 +117,88 @@ const Buttons = () => {
           loading: false,
           success: false,
           error: true,
-          response: "",
+          response: "Get All Campaing",
         },
       }));
     }
   };
-  // const delay = (ms: number) =>
-  //   new Promise((resolve) => setTimeout(resolve, ms));
+  
   const handleGetSingleCampaign = async () => {
-    console.log("handleGetSingleCampaign() runs......",value );
+    console.log("handleGetSingleCampaign() runs......",response );
 
     setApiStates((prevApiStates) => ({
       ...prevApiStates,
       getSingleCampaign: {
         loading: true,
-        success: false,
+        // success: false,
         error: false,
-        response: "",
+        response: "Single Campaing",
       },
     }));
 
     let abc = [];
-    console.log("waiting for this response", value);
+    // console.log("waiting for this response", value);
 
-    console.log("SORT KEY: ", value)
-    const res: any = await getsinglecompaing(value);
+    // console.log("SORT KEY: ", value)
+    const res: any = await getsinglecompaing(response);
     console.log("=========", res);
     if ("error" in res) abc.push(res.error.message);
 
     // for (let i = 0; i <= response.length; i++) {
-    //   console.log("this is a length of array",response.length,response[i])
+    //   // console.log("this is a length of array",response.length,response[i])
     //     const res:any = await getsinglecompaing(response[i]);
-    //     console.log("=========")
+    //     // console.log("=========")
     //     if ("error" in res) abc.push(res.error.message);
-        // await delay(500)
-    // }
-
-    if (abc.length === 0) {
-      setApiStates((prevApiStates) => ({
-        ...prevApiStates,
-        getSingleCampaign: {
-          loading: false,
-          success: true,
-          error: false,
-          response: "",
-        },
-      }));
-    } else {
-      setApiStates((prevApiStates) => ({
-        ...prevApiStates,
-        getSingleCampaign: {
-          loading: false,
-          success: false,
-          error: true,
-          response: "",
-        },
-      }));
-    }
-  };
-
-  const handleDeleteCampaign = async () => {
-    setApiStates((prevApiStates) => ({
-      ...prevApiStates,
-      deleteCampaign: {
-        loading: true,
-        success: false,
-        error: false,
-        response: "",
-      },
-    }));
-
-    let abc = [];
-
-    for (let i = 0; i < response.length; i++) {
-      const res = await deleteCampaign(response[i]);
-      if (res === "AxiosError") {
-        console.log("Error occurred in deleting CAM---", res);
-        abc.push(res);
-      }
-    }
-    // const res =  await deleteCampaign(sortkeyvalue);
-    // if (res === "AxiosError") {
-    //   console.log("Error occurred in deleting CAM---", res);
-    //   abc.push(res);
-    // }
-    // console.log("===============!!!!!",sortkeyvalue,res)
-
-    if (abc.length === 0) {
-      setTimeout(() => {
-        setOpenIndex(false)
-      }, 1000);
       
+    // }
+
+    if (abc.length === 0) {
       setApiStates((prevApiStates) => ({
         ...prevApiStates,
-        deleteCampaign: {
+        getSingleCampaign: {
           loading: false,
           success: true,
           error: false,
-          response: "",
+          response: "Single Campaing",
         },
       }));
     } else {
-      setOpenIndex(true)
       setApiStates((prevApiStates) => ({
         ...prevApiStates,
-        deleteCampaign: {
+        getSingleCampaign: {
           loading: false,
           success: false,
           error: true,
-          response: "",
+          response: "Single Campaing",
         },
       }));
     }
   };
+
+ 
 
   const handleKillCampaign = async () => {
     setApiStates((prevApiStates) => ({
       ...prevApiStates,
       killCampaign: {
         loading: true,
-        success: false,
+        
         error: false,
-        response: "",
+        response: "Kill Campaign",
       },
     }));
     let abc = [];
     // for (let i = 0; i < response.length; i++) {
     //   const res = await killCampaign(response[i]);
-    //   console.log(res);
+    //   console.log(res,i,"index");
     //   if (res === "AxiosError") {
     //     console.log("Error occurred in kill CAM---", res);
     //     abc.push(res);
     //   }
     // }
    
-    const res =  await killCampaign(sortkeyvalue);
-    console.log("handleKillCampaign ", sortkeyvalue,res)
+    const res =  await killCampaign(response);
+    // console.log("handleKillCampaign ", response)
     if (res === "AxiosError") {
       console.log("Error occurred in deleting CAM---", res);
       abc.push(res);
@@ -265,7 +212,7 @@ const Buttons = () => {
           loading: false,
           success: true,
           error: false,
-          response: "",
+          response: "Kill Campaign",
         },
       }));
     } else {
@@ -275,7 +222,7 @@ const Buttons = () => {
           loading: false,
           success: false,
           error: true,
-          response: "",
+          response: "Kill Campaign",
         },
       }));
     }
@@ -283,14 +230,14 @@ const Buttons = () => {
 
   const handlePauseCampaign = async () => {
 
-    console.log("handlePauseCampaign ", sortkeyvalue)
+    // console.log("handlePauseCampaign ", sortkeyvalue)
     setApiStates((prevApiStates) => ({
       ...prevApiStates,
       pauseCampaign: {
         loading: true,
         success: false,
         error: false,
-        response: "",
+        response: "Pause Campaign",
       },
     }));
     let abc = [];
@@ -302,7 +249,7 @@ const Buttons = () => {
     //   }
     // }
 
-    const res =  await pauseCampaign(sortkeyvalue);
+    const res =  await pauseCampaign(response);
     if (res === "AxiosError") {
       console.log("Error handlePauseCampaign", res);
       abc.push(res);
@@ -315,7 +262,7 @@ const Buttons = () => {
           loading: false,
           success: true,
           error: false,
-          response: "",
+          response: "Pause Campaign",
         },
       }));
     } else {
@@ -325,7 +272,7 @@ const Buttons = () => {
           loading: false,
           success: false,
           error: true,
-          response: "",
+          response: "Pause Campaign",
         },
       }));
     }
@@ -338,7 +285,7 @@ const Buttons = () => {
         loading: true,
         success: false,
         error: false,
-        response: "",
+        response: "Resume Campaign",
       },
     }));
     let abc = [];
@@ -350,7 +297,7 @@ const Buttons = () => {
     //   }
     // }
 
-    const res =  await resumeCampaign(sortkeyvalue);
+    const res =  await resumeCampaign(response);
     if (res === "AxiosError") {
       console.log("Error occurred in deleting CAM---", res);
       abc.push(res);
@@ -365,7 +312,7 @@ const Buttons = () => {
           loading: false,
           success: true,
           error: false,
-          response: "",
+          response: "Resume Campaign",
         },
       }));
     } else  {
@@ -375,12 +322,76 @@ const Buttons = () => {
           loading: false,
           success: false,
           error: true,
-          response: "",
+          response: "Resume Campaign",
         },
       }));
     } 
   };
+
+  const handleDeleteCampaign = async () => {
+    setApiStates((prevApiStates) => ({
+      ...prevApiStates,
+      deleteCampaign: {
+        loading: true,
+        // success: false,
+        error: false,
+        response: "Delete Campaign",
+      },
+    }));
+
+    let abc = [];
+    
+    // for (let i = 0; i < response.length; i++) {
+    //   const res = await deleteCampaign(response[i]);
   
+      
+    //   if (res === "AxiosError") {
+    //     console.log("Error occurred in deleting CAM---", res);
+    //     abc.push(res);
+    //   }
+    // }
+    const res =  await deleteCampaign(response);
+    if (res === "AxiosError") {
+      console.log("Error occurred in deleting CAM---", res);
+      abc.push(res);
+    }
+    // console.log("===============!!!!!",sortkeyvalue,res)
+
+    if (abc.length === 0) {
+      setTimeout(() => {
+        
+        setOpenIndex(false)
+        
+      }, 1000);
+
+      setTimeout(()=>{
+        setHandlebordser(false)
+        setApiError(false)
+      },1200)
+      
+      setApiStates((prevApiStates) => ({
+        ...prevApiStates,
+        deleteCampaign: {
+          loading: false,
+          success: true,
+          error: false,
+          response: "Delete Campaign",
+        },
+      }));
+    } else {
+      setOpenIndex(true)
+      setApiError(false)
+      setApiStates((prevApiStates) => ({
+        ...prevApiStates,
+        deleteCampaign: {
+          loading: false,
+          success: false,
+          error: true,
+          response: "Delete Campaign",
+        },
+      }));
+    }
+  };
 
   useEffect(() => {
 
@@ -391,34 +402,42 @@ const Buttons = () => {
        
       
     };
-    if (value) {
+    if (value > 0) {
       handleAllCampaignActions()
-    setHandelallapis("run")
+    
     }
     
   }, [value])
+
 useEffect(() => {
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
   
   const fetchData = async () => {
     try {
       await handleGetAllCampaign();
+        await delay(500)
       await handleGetSingleCampaign();
+      await delay(500)
       // await handlePauseCampaign();
       await handleKillCampaign();
+      await delay(500)
       // await handleResumeCampaign();
       await handleDeleteCampaign();
+      await delay(500)
     } catch (error) {
       console.error("Error in useEffect:", error);
     }
   };
-  if (handelallapis ) {
+
+  if ( response.length > 0 ) {
  
     fetchData();
   }
 
   
 
-}, [handelallapis])
+}, [response])
   ;
 
   
@@ -426,43 +445,61 @@ useEffect(() => {
 
 
   return (
-    <Box px={"25px"} py={"10px"} background={"#0035a4"} rounded={"20px"} w={"740px"}>
+    <Box px={"25px"} py={"10px"} background={"#ffffff"}  w={"768px"}  borderBottomRadius={"4px"} borderBottom={"2px solid #e5e6e8"} borderColor={"#e5e6e8"} borderLeft={"2px solid #e5e6e8"} borderRight={"2px solid #e5e6e8"} >
      
       <Box>
         
         {/* Make Post Request  */}
-        <Heading as="h2" size="lg" mb={4} fontFamily="monospace">
-          Make Campaign API call{" "}
+        <Box display={"flex"} py={"4px"}
+       
+        alignItems={"center"}
+        >
+        <Heading textColor={"#0035a4"}  fontFamily={"Fredoka"} fontWeight={"semibold"} fontSize={"18px"}>
+          Make Campaign 
         </Heading>
         <ApiCallComponent
           Loading={apiStates.makePostRequest.loading}
           Success={apiStates.makePostRequest.success}
           Error={apiStates.makePostRequest.error}
+          response= {apiStates.makePostRequest.response} 
           Apifunction={handleMakePostRequest}
         />
-        <br />
+        </Box>
+     
 
          {/* Get All Campaigns */}
-        <Heading textColor={"white"}  fontFamily={"Fredoka"} fontWeight={500} fontSize={"24px"}>
-          Get all Campaign API call{" "}
+         <Box display={"flex"} 
+       py={"4px"}
+       alignItems={"center"}>
+        <Heading textColor={"#0035a4"}   fontFamily={"Fredoka"} fontWeight={"semibold"} fontSize={"18px"}>
+          Get all Campaign 
         </Heading>
         <ApiCallComponent
           Loading={apiStates.getAllCampaign.loading}
           Success={apiStates.getAllCampaign.success}
           Error={apiStates.getAllCampaign.error}
+          response= {apiStates.getAllCampaign.response}
           Apifunction={handleGetAllCampaign}
         />
+        </Box>
 
         {/* Get Single Campaign */}
-        <Heading textColor={"white"}  fontFamily={"Fredoka"} fontWeight={500} fontSize={"24px"}>
-          Single Campaign API call{" "}
+        <Box
+        display={"flex"} 
+        py={"4px"}
+        alignItems={"center"}
+        >
+        <Heading textColor={"#0035a4"}   fontFamily={"Fredoka"} fontWeight={"semibold"} fontSize={"18px"}>
+          Single Campaign 
         </Heading>
         <ApiCallComponent
           Loading={apiStates.getSingleCampaign.loading}
           Success={apiStates.getSingleCampaign.success}
           Error={apiStates.getSingleCampaign.error}
+          response= {apiStates.getSingleCampaign.response}
           Apifunction={handleGetSingleCampaign}
         />
+        </Box>
         {/* Get Pasue Campaign */}
         {/* <Heading as="h2" size="lg" mb={4} fontFamily="monospace">
           Pause Campaign API call{" "}
@@ -475,15 +512,22 @@ useEffect(() => {
         /> */}
 
         {/* Get Kill Campaign */}
-        <Heading textColor={"white"}  fontFamily={"Fredoka"} fontWeight={500} fontSize={"24px"}>
-          Kill Campaign API call{" "}
+        <Box
+        display={"flex"} 
+        py={"4px"}
+        alignItems={"center"}
+        >
+        <Heading textColor={"#0035a4"}   fontFamily={"Fredoka"} fontWeight={"semibold"} fontSize={"18px"}>
+          Kill Campaign 
         </Heading>
         <ApiCallComponent
           Loading={apiStates.killCampaign.loading}
           Success={apiStates.killCampaign.success}
           Error={apiStates.killCampaign.error}
+          response= {apiStates.killCampaign.response}
           Apifunction={handleKillCampaign}
         />
+        </Box>
  {/* Get Resume Campaign */}
  {/* <Heading as="h2" size="lg" mb={4} fontFamily="monospace">
           Resume Campaign API call{" "}
@@ -495,14 +539,19 @@ useEffect(() => {
           Apifunction={resumeCampaign}
         /> */}
         {/* Get Delete Campaign */}
-        <Box  >
-        <Text textColor={"white"}  fontFamily={"Fredoka"} fontWeight={500} fontSize={"24px"}>
-          Delete Campaign API call
+        <Box 
+         display={"flex"} 
+         py={"4px"}
+         alignItems={"center"}
+         >
+        <Text textColor={"#0035a4"}   fontFamily={"Fredoka"} fontWeight={"semibold"} fontSize={"18px"}>
+          Delete Campaign 
         </Text>
         <ApiCallComponent
           Loading={apiStates.deleteCampaign.loading}
           Success={apiStates.deleteCampaign.success}
           Error={apiStates.deleteCampaign.error}
+          response= {apiStates.deleteCampaign.response}
           Apifunction={handleDeleteCampaign}
         />
         
