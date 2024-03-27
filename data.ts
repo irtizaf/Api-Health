@@ -1,3 +1,5 @@
+import { deleteCampaign, getallcompaing, getsinglecompaing, killCampaign, makePostRequest, pauseCampaign, resumeCampaign } from "@/Apifunction/apis";
+
 interface ApiData {
   loading: boolean | null;
   success?: boolean | string | null;
@@ -127,3 +129,20 @@ export const payload = {
   FREQUENCY: 3,
   EMAIL: "62b6518e7b23eea780434404a2a39b6d3dc52264b86a57c566c6cb4ea4435ff7",
 };
+
+
+export const apiFunctions = [
+    // { name: 'MakePostRequest', func: makePostRequest},
+    { name: 'Getallcompaing', func: getallcompaing },
+    { name: 'Getsinglecompaing', func: getsinglecompaing },
+    
+    { name: 'KillCampaign', func: killCampaign },
+    { name: 'DeleteCampaign', func: deleteCampaign },
+    // { name: 'pauseCampaign', func: pauseCampaign },
+    // { name: 'resumeCampaign', func: resumeCampaign }
+  ];
+
+  export const apiFunctionscreate = [
+    { name: 'MakePostRequest', func: makePostRequest},
+  
+  ];

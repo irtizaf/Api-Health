@@ -31,7 +31,7 @@ const Buttons = () => {
 // console.log(sortkeyvalue)
 
   const handleMakePostRequest = async () => {
-    console.log("handleMakePostRequest)( runs...");
+    // console.log("handleMakePostRequest)( runs...");
     setApiStates((prevApiStates) => ({
       ...prevApiStates,
       makePostRequest: {
@@ -43,9 +43,9 @@ const Buttons = () => {
     }));
 
     const res = await postingCampaigns();
-    console.log("CAMPAIGN IS CREATED:", res);
+    // console.log("CAMPAIGN IS CREATED:", res);
     setResponse( res);
-    console.log("SORT KEY ASSIGN IN STATE", response)
+    // console.log("SORT KEY ASSIGN IN STATE", response)
     // setSortkeyvalue(res);
     //  setSortkeyvalue(res)
     // setValue(res)
@@ -110,7 +110,7 @@ const Buttons = () => {
        
       // }
     } else {
-      console.log("Error fetching campaigns:");
+      // console.log("Error fetching campaigns:");
       setApiStates((prevApiStates) => ({
         ...prevApiStates,
         getAllCampaign: {
@@ -124,7 +124,7 @@ const Buttons = () => {
   };
   
   const handleGetSingleCampaign = async () => {
-    console.log("handleGetSingleCampaign() runs......",response );
+    // console.log("handleGetSingleCampaign() runs......",response );
 
     setApiStates((prevApiStates) => ({
       ...prevApiStates,
@@ -141,7 +141,7 @@ const Buttons = () => {
 
     // console.log("SORT KEY: ", value)
     const res: any = await getsinglecompaing(response);
-    console.log("=========", res);
+    // console.log("=========", res);
     if ("error" in res) abc.push(res.error.message);
 
     // for (let i = 0; i <= response.length; i++) {
@@ -200,7 +200,7 @@ const Buttons = () => {
     const res =  await killCampaign(response);
     // console.log("handleKillCampaign ", response)
     if (res === "AxiosError") {
-      console.log("Error occurred in deleting CAM---", res);
+      // console.log("Error occurred in deleting CAM---", res);
       abc.push(res);
     }
     
@@ -251,7 +251,7 @@ const Buttons = () => {
 
     const res =  await pauseCampaign(response);
     if (res === "AxiosError") {
-      console.log("Error handlePauseCampaign", res);
+      // console.log("Error handlePauseCampaign", res);
       abc.push(res);
     }
 
@@ -299,7 +299,7 @@ const Buttons = () => {
 
     const res =  await resumeCampaign(response);
     if (res === "AxiosError") {
-      console.log("Error occurred in deleting CAM---", res);
+      // console.log("Error occurred in deleting CAM---", res);
       abc.push(res);
     }
 
@@ -352,7 +352,7 @@ const Buttons = () => {
     // }
     const res =  await deleteCampaign(response);
     if (res === "AxiosError") {
-      console.log("Error occurred in deleting CAM---", res);
+      // console.log("Error occurred in deleting CAM---", res);
       abc.push(res);
     }
     // console.log("===============!!!!!",sortkeyvalue,res)
@@ -426,7 +426,7 @@ useEffect(() => {
       await handleDeleteCampaign();
       await delay(500)
     } catch (error) {
-      console.error("Error in useEffect:", error);
+      // console.error("Error in useEffect:", error);
     }
   };
 

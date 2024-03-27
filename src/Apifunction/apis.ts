@@ -89,7 +89,7 @@ export const makePostRequest = async () => {
     // setValue({value:"hello"})
     return responsevalue.data.SORT_KEY;
   } catch (error: any) {
-    console.error("Error making POST request:", error);
+    console.log("Error making POST request:", error.name);
     return error.name;
   }
 };
@@ -103,8 +103,8 @@ export const getallcompaing = async () => {
     console.log("get data", data.data);
     return data.data;
   } catch (error: any) {
-    console.error("Error fetching API data:", error.response.data);
-    return error.response.data;
+    console.log("Error fetching API data:", error.response.data);
+    return error.name;
   }
 };
 export const getsinglecompaing = async (sortkey: string) => {
@@ -114,8 +114,8 @@ export const getsinglecompaing = async (sortkey: string) => {
     console.log("get data for single", data);
     return data;
   } catch (error: any) {
-    console.error("Error fetching API data:", error);
-    return error.response.data;
+    console.log("Error fetching API data:", error.name);
+    return error.name;
   }
 };
 export const deleteCampaign = async (sortkey: string) => {
@@ -130,7 +130,7 @@ export const deleteCampaign = async (sortkey: string) => {
 
     return response.status;
   } catch (error: any) {
-    console.error("Error occurred while deleting campaign:", error);
+    console.log("Error occurred while deleting campaign:", error.name);
     return error.name;
   }
 };
@@ -140,12 +140,12 @@ export const killCampaign = async (sortkey: string) => {
   try {
     // Make a DELETE request to the API endpoint using Axios
     const response = await axios.delete(apiUrl);
-    console.log("Campaign deleted successfully",response);
+    console.log("Campaign kill successfully",response);
     // Check if the request was successful (status code 2xx)
     return response
     
   } catch (error: any) {
-    console.error("Error occurred while deleting campaign:", error);
+    console.log("Error occurred while killing campaign:", error.name);
     return error.name
   }
 };
@@ -160,7 +160,7 @@ export const pauseCampaign = async (sortkey: string) => {
     // Check if the request was successful (status code 2xx)
    
   } catch (error: any) {
-    console.error("Error occurred while deleting campaign:", error);
+    console.error("Error occurred while deleting campaign:", error.name);
     return error.name;
   }
 };
@@ -175,7 +175,7 @@ export const resumeCampaign = async (sortkey: string) => {
     // Check if the request was successful (status code 2xx)
     return response
   } catch (error: any) {
-    console.error("Error occurred while deleting campaign:", error);
+    console.error("Error occurred while deleting campaign:", error.name);
     return error.name;
   }
 };

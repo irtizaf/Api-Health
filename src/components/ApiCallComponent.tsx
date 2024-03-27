@@ -10,7 +10,7 @@ const ApiCallComponent = (props: any) => {
   const [message, setMessage] = useState("");
   const [message2, setMessage2] = useState("");
 
-  console.log(Error,"===== suecess valye ")
+  // console.log(Error,"===== suecess valye ")
 
   const handleApiCall = async () => {
     try {
